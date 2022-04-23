@@ -74,7 +74,7 @@ if (debug) {
         req.status(200).json({stmt})
     });
 
-    app.get('/app/error/', (res, req, next) => {
+    app.get('/app/error/', (res, req) => {
         throw new Error('Error test successful')
     })
 }
