@@ -15,7 +15,7 @@ const args = require('minimist')(process.argv.slice(2))
 const port = args.port || process.env.PORT || 3000
 const debug = args.debug || false
 const log = args.log || true
-console.log(args)
+
 // If --help or -h, echo help text to STDOUT and exit
 if (args.help || args.h) {
     const help = (`
@@ -69,12 +69,13 @@ app.use( (req, res, next) => {
 })
 
 if (debug) {
-    app.get('/app/log/access/', (res, req) => {
+    app.get('/app/log/access/', (res, req, next) => {
         const stmt = logdb.prepare('SELECT * FROM accesslog').all()
         req.status(200).json({stmt})
+        next()
     });
 
-    app.get('/app/error/', (res, req) => {
+    app.get('/app/error/', (res, req, next) => {
         throw new Error('Error test successful')
     })
 }
