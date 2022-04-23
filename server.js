@@ -15,6 +15,7 @@ const args = require('minimist')(process.argv.slice(2))
 const port = args.port || process.env.PORT || 3000
 const debug = args.debug || false
 const log = args.log || true
+console.log(args)
 // If --help or -h, echo help text to STDOUT and exit
 if (args.help || args.h) {
     const help = (`
@@ -80,7 +81,8 @@ if (debug) {
 
 if (log) {
     const accesslog = fs.createWriteStream('./access.log', { flags: 'a' })
-    app.use(morgan('combined', { stream: accesslog}))
+    // Set up the access logging middleware
+    app.use(morgan('combined', { stream: accesslog }))
 }
 
 
@@ -141,9 +143,9 @@ function countFlips(array) {
     var tails = 0;
     for (const flip of array) {
       (flip === "heads") ? heads ++ : tails ++;
+    }
+    return { "tails": tails, "heads": heads }
 }
-    return { "tails":tails, "heads":heads }
-  }
 
 function flipACoin(call) {
     const flip = coinFlip();
